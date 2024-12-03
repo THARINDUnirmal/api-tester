@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:api_tester/api/urls.dart';
 import 'package:api_tester/models/product_model.dart';
 import 'package:http/http.dart' as http;
@@ -29,6 +28,27 @@ class ApiServices {
     } catch (e) {
       print(e.toString());
       throw Exception("Failed to fetch products");
+    }
+  }
+
+  //get single product
+  Future<ProductModel> getSingleProduct(int id) async {
+    final String url = "https://fakestoreapi.com/products/$id";
+
+    try {
+      final resopnes = await http.get(Uri.parse(url));
+
+      if (resopnes.statusCode == 200) {
+        final ProductModel getProduct =
+            ProductModel.fromJson(jsonDecode(resopnes.body));
+
+        return getProduct;
+      } else {
+        throw Exception("Error to fetch Product");
+      }
+    } catch (e) {
+      print(e.toString());
+      throw Exception("Error : $e");
     }
   }
 }
